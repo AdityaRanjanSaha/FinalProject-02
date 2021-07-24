@@ -1,5 +1,6 @@
 var runner,leftA,rightA;
 var tries = 0;
+var obsGrp;
 
 function preload(){
   
@@ -16,7 +17,9 @@ function preload(){
          "runnerIMG-R-Side/giphy-7.png","runnerIMG-R-Side/giphy-8.png","runnerIMG-R-Side/giphy-9.png",
          "runnerIMG-R-Side/giphy-10.png","runnerIMG-R-Side/giphy-11.png","runnerIMG-R-Side/giphy-12.png",
          "runnerIMG-R-Side/giphy-13.png","runnerIMG-R-Side/giphy-14.png","runnerIMG-R-Side/giphy-15.png");
-    
+    cImage1=loadAnimation("dragon.gif");
+    cImage2=loadAnimation("spider.gif");
+    cImage3=loadAnimation("lion.gif");
 }
 
 function setup(){
@@ -54,16 +57,24 @@ m23=createSprite(400,400,140,10);
 m24=createSprite(610,400,140,10);
 m25=createSprite(675,325,10,140);
 
-
+obsGrp = new Group();
 }
 
 function draw(){
     background("white");
 
-    if(runner.isTouching(m1)|| runner.isTouching(m2)){
+    if(runner.isTouching(m1)|| runner.isTouching(m2)|| runner.isTouching(m3)|| runner.isTouching(m4)|| runner.isTouching(m5)
+   ||runner.isTouching(m6)|| runner.isTouching(m7)|| runner.isTouching(m8)|| runner.isTouching(m9)|| runner.isTouching(m10)
+   ||runner.isTouching(m11)|| runner.isTouching(m12)|| runner.isTouching(m13)|| runner.isTouching(m14)|| runner.isTouching(m15)
+   ||runner.isTouching(m16)|| runner.isTouching(m17)|| runner.isTouching(m18)|| runner.isTouching(m19)|| runner.isTouching(m20)
+   ||runner.isTouching(m21)|| runner.isTouching(m22)|| runner.isTouching(m23)|| runner.isTouching(m24)|| runner.isTouching(m25)){
         runner.x = 50;
         runner.y = 400;
         tries ++;
+    }
+    obstacles();
+    if(tries == 5){
+        reset();
     }
     drawSprites();
 }
@@ -89,11 +100,63 @@ function obstacles(){
 if(frameCount%100 === 0){
     var obs = createSprite(random(150,800), random(75,500),10,10);
    if(obs.x< 400){
-       obs.velocityX = 5;
+       obs.velocityX = 2;
+       if(obs.x>800){
+        obs.velocityX = -2;
+       }
    }else{
-       obs.velocityY = -5;
+       obs.velocityY = -2;
+       if(obs.x< 150){
+        obs.velocityX = 2;
+       }
    }
+   //obs.addAnimation("dragon",cImage1);
+   obs.scale = 0.2;
+   obs.lifetime = 400;
+   obs.bounceOff(m1);
+   obs.bounceOff(m2);
+   obs.bounceOff(m3);
+   obs.bounceOff(m4);
+   obs.bounceOff(m5);
+   obs.bounceOff(m6);
+   obs.bounceOff(m7);
+   obs.bounceOff(m8);
+   obs.bounceOff(m9);
+   obs.bounceOff(m10);
+   obs.bounceOff(m11);
+   obs.bounceOff(m12);
+   obs.bounceOff(m13);
+   obs.bounceOff(m14);
+   obs.bounceOff(m15);
+   obs.bounceOff(m16);
+   obs.bounceOff(m17);
+   obs.bounceOff(m18);
+   obs.bounceOff(m19);
+   obs.bounceOff(m20);
+   obs.bounceOff(m21);
+   obs.bounceOff(m22);
+   obs.bounceOff(m23);
+   obs.bounceOff(m24);
+   obs.bounceOff(m25);
+   obsGrp.add(obs);
+}
+}
 
-}
-}
+function reset(){
+    //gameState = PLAY;
+    //gameOver.visible = false;
+    //restart.visible = false;
+    
+    obsGrp.destroyEach();
+    runner.x = 50;
+    runner.y = 400;
+        
+    if(localStorage["HighestScore"]<score){
+      localStorage["HighestScore"] = score;
+    }
+        
+    tries = 0;
+    
+  }
+
 
